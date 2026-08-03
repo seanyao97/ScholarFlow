@@ -1,8 +1,6 @@
 # ScholarFlow
 An AI-powered personal research operating system for managing projects, experiments, literature evidence, knowledge, and scientific outputs.
 
-# ScholarFlow
-
 ScholarFlow 是一个面向硕博研究人员的个人科研操作系统。
 
 它帮助研究者管理从研究想法产生，到实验实施、数据分析、论文 Figure 构建以及最终成果沉淀的完整科研流程。
