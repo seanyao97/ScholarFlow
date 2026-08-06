@@ -1,0 +1,17 @@
+{
+  "name": "scholarflow",
+  "productName": "ScholarFlow",
+  "version": "1.0.0",
+  "description": "ScholarFlow —— 面向硕博研究人员的个人科研操作系统(桌面正式版)",
+  "main": "main.js",
+  "author": "Sean Yao <seanyao9712@163.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-packager . ScholarFlow --platform=win32 --arch=x64 --out=dist --no-asar --overwrite --app-version=1.0.0"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-packager": "^17.1.2"
+  }
+}
