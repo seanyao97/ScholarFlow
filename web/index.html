@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScholarFlow v1.0</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- 左侧导航栏 -->
+  <aside class="sidebar">
+    <div class="brand">ScholarFlow</div>
+    <nav class="nav">
+      <div class="nav-item active">首页</div>
+      <div class="nav-item">日程管理</div>
+      <div class="nav-item">项目管理</div>
+      <div class="nav-item">文献证据</div>
+      <div class="nav-item">实验中心</div>
+      <div class="nav-item">数据分析</div>
+      <div class="nav-item">AI 助手</div>
+      <div class="nav-item">成果管理</div>
+      <div class="nav-item">文件管理</div>
+      <div class="nav-divider"></div>
+      <div class="nav-item settings">设置</div>
+    </nav>
+  </aside>
+
+  <!-- 主内容区 -->
+  <main class="main">
+    <!-- ============ 视图:首页工作台 ============ -->
+    <div class="view" id="viewHome">
+    <!-- 左列 40% -->
+    <section class="col-left">
+      <!-- 个人信息概览 -->
+      <div class="card profile">
+        <button class="edit-btn profile-edit" id="profileEdit">编辑</button>
+        <svg class="profile-wave" viewBox="0 0 200 200" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0,120 C40,90 70,140 110,110 C150,80 175,110 200,95 L200,200 L0,200 Z"
+                fill="#2F6FED" opacity="0.05"/>
+          <path d="M0,150 C50,120 90,175 140,145 C165,130 185,150 200,140 L200,200 L0,200 Z"
+                fill="#2F6FED" opacity="0.05"/>
+        </svg>
+        <div class="profile-body">
+          <div class="profile-name" id="profileName">林川</div>
+          <div class="profile-meta" id="profileMeta">江北大学 · 物理系<br>博士二年级</div>
+          <div class="profile-stats">
+            <div class="stat">
+              <div class="stat-num" id="statProgress">46%</div>
+              <div class="stat-label">学业进度</div>
+            </div>
+            <div class="stat">
+              <div class="stat-num" id="statTasks">8</div>
+              <div class="stat-label">进行中任务</div>
+            </div>
+            <div class="stat">
+              <div class="stat-num" id="statStreak">23天</div>
+              <div class="stat-label">连续记录</div>
+            </div>
+          </div>
+        </div>
+        <div class="profile-btn" id="profileBtn">查看学业概览</div>
+      </div>
+
+      <!-- 科研动态 -->
+      <div class="card" id="homeFeedCard">
+        <div class="feed-head">
+          <span class="feed-title">科研动态</span>
+          <span class="feed-more" id="feedMore">查看全部动态</span>
+        </div>
+        <div class="timeline" id="timeline"></div>
+      </div>
+    </section>
+
+    <!-- 右列 60% -->
+    <section class="col-right">
+      <!-- 日程管理 -->
+      <div class="card cal-card">
+        <div class="cal-head">
+          <div class="cal-nav">
+            <button class="cal-nav-btn" id="calPrev" title="上个月">‹</button>
+            <span class="cal-title" id="calTitle">2026年8月</span>
+            <button class="cal-nav-btn" id="calNext" title="下个月">›</button>
+            <button class="cal-today-btn" id="calToday">今天</button>
+          </div>
+          <button class="cal-export" id="calExport">导出本周工作进展汇报</button>
+          <div class="countdown" id="countdownRow"></div>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+
+      <!-- 今日工作计划 -->
+      <div class="card todo-card" id="homeTodoCard">
+        <div class="todo-head">
+          <span class="todo-title" id="todoTitle">今日工作计划</span>
+          <span class="todo-date" id="todoDate"></span>
+        </div>
+        <div class="todo-list" id="todoList"></div>
+        <button class="todo-add" id="todoAdd">+ 添加任务</button>
+      </div>
+    </section>
+    </div><!-- /viewHome -->
+
+    <!-- ============ 视图:日程管理 ============ -->
+    <div class="view view-schedule" id="viewSchedule" hidden>
+      <!-- 顶部日期控制栏 -->
+      <div class="sched-top">
+        <div class="sched-nav">
+          <button class="cal-nav-btn" id="schPrev" title="上个月">‹</button>
+          <span class="sched-month" id="schMonth">2026年8月</span>
+          <button class="cal-nav-btn" id="schNext" title="下个月">›</button>
+        </div>
+        <div class="sched-view">
+          <button class="sched-view-btn" id="schWeekView">周视图</button>
+          <button class="sched-view-btn active" id="schMonthView">月视图</button>
+        </div>
+        <span class="sched-plancycle" id="schPlanCycle"></span>
+        <button class="sched-export" id="schExport">导出本周工作进展汇报</button>
+      </div>
+
+      <div class="sched-body">
+        <!-- 左侧 70%:月度日历 -->
+        <section class="sched-left">
+          <div class="card sched-cal-card">
+            <div class="sched-cal-head">
+              <span class="sched-cal-title" id="schCalTitle">2026年8月</span>
+              <span class="sched-cal-hint">点击日期查看当日安排</span>
+            </div>
+            <div class="sched-grid" id="schGrid"></div>
+          </div>
+          <div class="card sched-day-panel" id="schDayPanel">
+            <div class="sched-day-head">
+              <span class="sched-day-title" id="schDayTitle">当日安排</span>
+              <span class="sched-day-sub" id="schDaySub"></span>
+              <span class="sched-day-actions">
+                <button class="edit-btn" id="schDayAdd">+ 添加安排</button>
+              </span>
+            </div>
+            <div class="sched-day-list" id="schDayList"></div>
+          </div>
+        </section>
+
+        <!-- 右侧 30%:信息卡片 -->
+        <section class="sched-right">
+          <div class="card sched-card">
+            <div class="sched-card-head">
+              <span class="sched-card-title">重要节点倒计时</span>
+              <button class="edit-btn" id="schMilestoneAdd">+ 添加节点</button>
+            </div>
+            <div class="countdown-list" id="schCountdown"></div>
+          </div>
+          <div class="card sched-card week-plan-card" id="schWeekPlan"></div>
+          <div class="card sched-card">
+            <div class="sched-card-head">
+              <span class="sched-card-title">本周科研状态</span>
+            </div>
+            <div class="week-stats" id="schWeekStats"></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- 底部:科研周报生成 -->
+      <div class="card sched-report">
+        <div class="sched-report-head">
+          <span class="sched-report-title">本周科研进展汇报</span>
+          <div class="sched-report-actions">
+            <button class="sched-report-btn" id="schReportRefresh">刷新</button>
+            <button class="sched-report-btn" id="schReportMd">导出 Markdown</button>
+            <button class="sched-report-btn" id="schReportWord">导出 Word</button>
+            <button class="sched-report-btn" id="schReportPdf">导出 PDF</button>
+          </div>
+        </div>
+        <div class="sched-report-preview" id="schReportPreview"></div>
+      </div>
+    </div><!-- /viewSchedule -->
+
+    <!-- ============ 视图:实验中心 ============ -->
+    <div class="view view-lab" id="viewLab" hidden>
+      <!-- 左:实验分类 -->
+      <button class="sidebar-toggle" data-target="labLeft" title="折叠/展开侧栏">◀</button>
+      <section class="lab-left" id="labLeft">
+        <div class="ai-left-title lab-left-title">实验分类</div>
+        <input class="lab-search" id="labSearch" placeholder="搜索实验名称…">
+        <div class="lab-cats" id="labCats"></div>
+        <button class="lab-new" id="labNew">+ 新建</button>
+      </section>
+
+      <!-- 中:编辑工作区 -->
+      <section class="lab-main">
+        <div class="lab-main-head">
+          <span class="lab-title" id="labTitle">DNA提取</span>
+          <button class="edit-btn" id="labRename">编辑</button>
+          <div class="lab-tags" id="labTags"></div>
+          <span class="lab-updated" id="labUpdated"></span>
+          <div class="lab-actions">
+            <button class="lab-action-btn primary" id="labSave">保存</button>
+            <button class="lab-action-btn" id="labPreview">预览</button>
+            <button class="lab-action-btn" id="labMode">编辑模式</button>
+            <button class="lab-action-btn" id="labExportMd">导出 MD</button>
+            <button class="lab-action-btn" id="labExportPdf">导出 PDF</button>
+          </div>
+        </div>
+        <div class="lab-cards" id="labCards"></div>
+        <button class="lab-add-step" id="labAddStep">+ 添加步骤</button>
+
+        <!-- 实验验证(关联文献) -->
+        <div class="lab-edit-card">
+          <div class="lab-edit-card-head">
+            <span class="lab-edit-card-title">实验验证（关联文献）</span>
+            <span class="lab-edit-card-actions">
+              <button class="edit-btn" id="labRefsEdit">编辑</button>
+              <button class="lab-ref-go" id="labRefGo">查看文献证据</button>
+            </span>
+          </div>
+          <div class="lab-refs" id="labRefs"></div>
+        </div>
+
+        <!-- 关联项目 -->
+        <div class="lab-edit-card">
+          <div class="lab-edit-card-head">
+            <span class="lab-edit-card-title">关联项目</span>
+            <button class="edit-btn" id="labProjectsEdit">编辑</button>
+          </div>
+          <div class="lab-projects" id="labProjects"></div>
+        </div>
+
+        <!-- 关联文件(文件库联动) -->
+        <div class="lab-edit-card">
+          <div class="lab-edit-card-head">
+            <span class="lab-edit-card-title">关联文件</span>
+            <button class="edit-btn" id="labFilesAdd">+ 上传 PDF</button>
+          </div>
+          <div class="lab-files" id="labFiles"></div>
+        </div>
+      </section>
+    </div><!-- /viewLab -->
+
+    <!-- ============ 视图:设置 ============ -->
+    <div class="view view-settings" id="viewSettings" hidden>
+      <div class="set-side">
+        <div class="set-menu" id="setMenu"></div>
+      </div>
+      <div class="set-main">
+        <div class="set-head">
+          <span class="set-head-title">设置</span>
+          <span class="set-head-sub">个人科研工作环境配置</span>
+        </div>
+        <div class="set-content" id="setContent"></div>
+      </div>
+    </div><!-- /viewSettings -->
+
+    <!-- ============ 视图:文献证据 ============ -->
+    <div class="view view-lit" id="viewLit" hidden>
+      <!-- 左:文献分类 -->
+      <button class="sidebar-toggle" data-target="litLeft" title="折叠/展开侧栏">◀</button>
+      <section class="lit-left" id="litLeft">
+        <div class="lit-left-head">
+          <span class="lit-left-title">文献证据</span>
+          <button class="edit-btn" id="litAdd">添加文献</button>
+        </div>
+        <div class="lit-nav" id="litNav"></div>
+        <div class="lit-side-label">标签</div>
+        <div class="lit-tags" id="litTags"></div>
+      </section>
+
+      <!-- 中:主体 -->
+      <section class="lit-main">
+        <div class="lit-toolbar">
+          <input class="lit-search" id="litSearch" placeholder="搜索标题、作者、关键词、证据内容…">
+          <button class="lit-filter-btn" id="litFilter">筛选</button>
+          <select class="lit-sort" id="litSort">
+            <option value="added">最新添加</option>
+            <option value="used">最近使用</option>
+            <option value="ev">证据数量</option>
+          </select>
+          <button class="lit-add-btn" id="litAdd2">+ 添加文献</button>
+        </div>
+        <div class="lit-body" id="litBody"></div>
+      </section>
+    </div><!-- /viewLit -->
+
+    <!-- ============ 视图:成果管理 ============ -->
+    <div class="view view-ach" id="viewAch" hidden>
+      <!-- 左:成果分类 -->
+      <button class="sidebar-toggle" data-target="achLeft" title="折叠/展开侧栏">◀</button>
+      <section class="ach-left" id="achLeft">
+        <div class="ach-left-head">
+          <span class="ach-left-title">成果管理</span>
+          <span class="ach-left-sub">个人科研成果档案库</span>
+        </div>
+        <div class="ach-nav" id="achNav"></div>
+        <button class="lit-add-btn ach-new" id="achNew">新建成果</button>
+      </section>
+
+      <!-- 中:成果列表 -->
+      <section class="ach-main">
+        <div class="lit-toolbar">
+          <input class="lit-search" id="achSearch" placeholder="搜索成果名称、期刊、来源项目…">
+          <select class="lit-sort" id="achSort">
+            <option value="group">按类型分组</option>
+            <option value="time">按时间排序</option>
+          </select>
+          <button class="lit-add-btn" id="achNew2">+ 新建成果</button>
+        </div>
+        <div class="ach-body" id="achBody"></div>
+      </section>
+    </div><!-- /viewAch -->
+
+    <!-- ============ 视图:文件管理 ============ -->
+    <div class="view view-files" id="viewFiles" hidden>
+      <!-- 左:分类 -->
+      <button class="sidebar-toggle" data-target="fileLeft" title="折叠/展开侧栏">◀</button>
+      <section class="file-left" id="fileLeft">
+        <span class="ai-left-title">文件管理</span>
+        <div class="file-stats" id="fileStats"></div>
+        <div class="file-cats" id="fileCats"></div>
+        <button class="lab-new" id="fileUpload">+ 上传文件</button>
+      </section>
+
+      <!-- 中:文件列表 -->
+      <section class="file-main">
+        <div class="file-toolbar">
+          <input class="lab-search" id="fileSearch" placeholder="搜索文件名…">
+          <button class="lab-action-btn" id="fileBackup" title="将各模块数据打包备份到文件库">备份数据</button>
+          <button class="lit-add-btn" id="fileUpload2">+ 上传文件</button>
+        </div>
+        <div class="file-batch" id="fileBatch" style="display:none"></div>
+        <div class="file-list" id="fileList"></div>
+      </section>
+    </div><!-- /viewFiles -->
+
+    <!-- ============ 视图:AI 助手 ============ -->
+    <div class="view view-ai" id="viewAi" hidden>
+      <!-- 左:历史对话 -->
+      <button class="sidebar-toggle" data-target="aiLeft" title="折叠/展开侧栏">◀</button>
+      <section class="ai-left" id="aiLeft">
+        <div class="ai-left-head">
+          <span class="ai-left-title">AI 助手</span>
+          <button class="lit-add-btn" id="aiNew">新建对话</button>
+        </div>
+        <input class="lit-search" id="aiSearch" placeholder="搜索历史对话…">
+        <div class="ai-chats" id="aiChats"></div>
+      </section>
+
+      <!-- 中:聊天窗口 -->
+      <section class="ai-chat">
+        <div class="ai-chat-head">
+          <span class="ai-chat-title">AI 助手</span>
+          <span class="ai-chat-model" id="aiModelName">模型：deepseek-chat</span>
+          <span class="ai-chat-status" id="aiStatus">检测中…</span>
+          <button class="lab-action-btn" id="aiConfigBtn" style="font-size:11px;padding:4px 10px">API 设置</button>
+        </div>
+        <div class="ai-msgs" id="aiMsgs"></div>
+        <div class="ai-input-wrap">
+          <textarea class="ai-input" id="aiInput" placeholder="输入科研问题…(Enter 发送,Shift+Enter 换行)"></textarea>
+          <div class="ai-input-bar">
+            <label class="ai-file-btn">📎 上传文件
+              <input type="file" id="aiFile" accept=".pdf,.doc,.docx,.txt,.md,.csv,.png,.jpg,.jpeg" hidden>
+            </label>
+            <span class="ai-file-name" id="aiFileName"></span>
+            <button class="ai-send-btn" id="aiSend">发送</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 右:快捷助手 -->
+      <section class="ai-right">
+        <div class="lit-card">
+          <div class="lit-card-title">快捷助手</div>
+          <div class="ai-quick" id="aiQuick"></div>
+        </div>
+      </section>
+    </div><!-- /viewAi -->
+
+    <!-- ============ 视图:项目管理 ============ -->
+    <div class="view view-proj" id="viewProj" hidden>
+      <!-- 左:项目列表 20% -->
+      <button class="sidebar-toggle" data-target="projLeft" title="折叠/展开侧栏">◀</button>
+      <section class="proj-left" id="projLeft">
+        <span class="ai-left-title">项目管理</span>
+        <input class="lab-search" id="projSearch" placeholder="搜索项目名称…">
+        <div class="proj-list" id="projList"></div>
+        <button class="lab-new" id="projNew">+ 新建项目</button>
+      </section>
+
+      <!-- 中:项目工作区 65% -->
+      <section class="proj-main">
+        <div class="proj-info" id="projInfo"></div>
+        <div class="proj-stages" id="projStages"></div>
+        <div class="proj-body" id="projBody"></div>
+      </section>
+
+      <!-- 右:项目概览 15% -->
+      <section class="proj-right">
+        <div class="card lit-card">
+          <div class="lit-card-title">项目概览</div>
+          <div id="projOverview"></div>
+        </div>
+      </section>
+    </div><!-- /viewProj -->
+
+    <!-- ============ 视图:数据分析(论文工作台) ============ -->
+    <div class="view view-paper" id="viewPaper" hidden>
+      <!-- 左:论文与 Figure 导航 20% -->
+      <button class="sidebar-toggle" data-target="paperLeft" title="折叠/展开侧栏">◀</button>
+      <section class="paper-left" id="paperLeft">
+        <span class="ai-left-title">数据分析</span>
+        <input class="lab-search" id="paperSearch" placeholder="搜索论文 / Figure…">
+        <div class="paper-list" id="paperList"></div>
+        <button class="lab-new" id="paperNew">+ 新建论文</button>
+      </section>
+
+      <!-- 中:Figure Markdown 工作区 80% -->
+      <section class="paper-main">
+        <div class="paper-head" id="paperHead"></div>
+        <div class="paper-workspace" id="paperWorkspace"></div>
+      </section>
+    </div><!-- /viewPaper -->
+
+    <!-- ============ 视图:学业概览 ============ -->
+    <div class="view" id="viewAcademic" hidden>
+      <!-- 左侧 40%:个人学籍 -->
+      <section class="academic-left">
+        <div class="card academic-card">
+          <div class="academic-head">
+            <span class="academic-title">个人学籍</span>
+            <div class="academic-head-actions">
+              <button class="edit-btn" id="studentEdit">编辑</button>
+              <button class="back-btn" id="backHome">← 返回工作台</button>
+            </div>
+          </div>
+          <div class="academic-name" id="academicName">林川</div>
+          <div class="academic-info">
+            <div class="academic-row">
+              <span class="academic-label">学校</span>
+              <span class="academic-value" id="academicSchool">江北大学</span>
+            </div>
+            <div class="academic-row">
+              <span class="academic-label">专业</span>
+              <span class="academic-value" id="academicDept">物理系</span>
+            </div>
+            <div class="academic-row">
+              <span class="academic-label">学历</span>
+              <span class="academic-value" id="academicDegree">博士二年级</span>
+            </div>
+          </div>
+        </div>
+        <div class="academic-blank"></div>
+      </section>
+
+      <!-- 右侧 60%:学业进展 -->
+      <section class="academic-right">
+        <div class="card academic-progress">
+          <span class="academic-title">学业进展</span>
+          <div class="progress-row">
+            <div class="progress-head">
+              <span class="progress-label">学分完成</span>
+              <span class="progress-num" id="creditsNum">72%</span>
+              <button class="edit-btn progress-edit" id="creditsEdit">编辑</button>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" id="creditsBar"></div></div>
+          </div>
+          <div class="progress-row">
+            <div class="progress-head">
+              <span class="progress-label">博士毕业论文</span>
+              <span class="progress-num" id="thesisNum">35%</span>
+              <button class="edit-btn progress-edit" id="thesisEdit">编辑</button>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" id="thesisBar"></div></div>
+          </div>
+        </div>
+        <div class="card academic-milestones">
+          <div class="milestone-head">
+            <span class="academic-title">培养节点</span>
+            <button class="edit-btn" id="milestonesEdit">管理节点</button>
+          </div>
+          <div class="milestone-row" id="milestoneRow"></div>
+        </div>
+      </section>
+    </div><!-- /viewAcademic -->
+  </main>
+
+  <!-- 全局通知提醒横幅(右上角悬浮,自动消失) -->
+  <div class="notice-banner" id="noticeBanner"></div>
+
+  <!-- 节点材料弹窗 -->
+  <div class="modal-overlay" id="academicModal" hidden>
+    <div class="modal">
+      <div class="modal-head">
+        <span class="modal-title" id="academicModalTitle"></span>
+        <button class="modal-close" id="academicModalClose" title="关闭">×</button>
+      </div>
+      <div class="academic-modal-meta" id="academicModalMeta"></div>
+      <div class="event-list" id="academicMaterialList"></div>
+      <form class="material-add-form" id="materialAddForm">
+        <input type="text" name="matName" placeholder="材料名称…" maxlength="60" required>
+        <select name="matType">
+          <option>PDF</option>
+          <option>文档</option>
+          <option>图片</option>
+          <option>数据</option>
+          <option>其他</option>
+        </select>
+        <button type="submit">添加材料</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 通用编辑弹窗 -->
+  <div class="modal-overlay" id="editModal" hidden>
+    <div class="modal">
+      <div class="modal-head">
+        <span class="modal-title" id="editModalTitle"></span>
+        <button class="modal-close" id="editModalClose" title="关闭">×</button>
+      </div>
+      <div id="editModalBody"></div>
+    </div>
+  </div>
+
+  <script src="js/store.js"></script>
+  <script src="js/calendar.js"></script>
+  <script src="js/schedule.js"></script>
+  <script src="js/lab.js"></script>
+  <script src="js/filestore.js"></script>
+  <script src="js/literature.js"></script>
+  <script src="js/achievement.js"></script>
+  <script src="js/files.js"></script>
+  <script src="js/project.js"></script>
+  <script src="js/paper.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
