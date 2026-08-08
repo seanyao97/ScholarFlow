@@ -1,6 +1,6 @@
 # ScholarFlow
 
-> 面向硕博研究人员的个人科研操作系统（Personal Research OS）
+> 面向硕博研究人员的个人科研工作台（Personal Research OS）
 
 从**研究想法 → 实验实施 → 数据分析 → 论文 Figure 构建 → 成果沉淀**,全流程科研资产在一个系统中形成闭环,所有数据保存在本地。
 
