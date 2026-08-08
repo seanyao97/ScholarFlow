@@ -208,15 +208,3 @@ npm start
 **Q:如何反馈问题?**
 GitHub Issue 或邮件 seanyao9712@163.com。
 
----
-
-## 🛠 技术栈
-
-- **前端**:原生 HTML / CSS / JavaScript(无框架,单页应用)
-- **桌面壳**:Electron
-- **本地存储**:localStorage + IndexedDB(文件库)
-- **AI 后端**:Python 本地代理(可选) + DeepSeek API
-
-## 📄 License
-
-[MIT License](./LICENSE)
