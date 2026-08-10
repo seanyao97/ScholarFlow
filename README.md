@@ -4,7 +4,7 @@
 
 从**研究想法 → 实验实施 → 数据分析 → 论文 Figure 构建 → 成果沉淀**,全流程科研资产在一个系统中形成闭环,所有数据保存在本地。
 
-![Version](https://img.shields.io/badge/version-1.0.1-blue) ![Platform](https://img.shields.io/badge/platform-Windows-9cf) ![License](https://img.shields.io/badge/license-MIT-green)
+![Version](https://img.shields.io/badge/version-1.0.3-blue) ![Platform](https://img.shields.io/badge/platform-Windows-9cf) ![License](https://img.shields.io/badge/license-MIT-green)
 
 ---
 
